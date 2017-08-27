@@ -1,3 +1,4 @@
+'use strict';
 // tooling
 const postcss = require('postcss');
 const parser  = require('postcss-value-parser');
