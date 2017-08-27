@@ -26,9 +26,7 @@ module.exports = postcss.plugin('postcss-place', (opts) => {
 			const value = parser(decl.value);
 
 			// divider position
-			const index = value.nodes.map(
-				(node) => node.type
-			).indexOf('space');
+			const index = value.nodes.findIndex((node) => node.type === 'space');
 
 			// new justify-[alignment] and align-[alignment] declarations
 			const alignValue   = index === -1 ? decl.value : parser.stringify(value.nodes.slice(0, index));
