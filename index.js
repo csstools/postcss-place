@@ -1,3 +1,4 @@
+'use strict';
 // tooling
 const postcss = require('postcss');
 const parser  = require('postcss-value-parser');
@@ -11,18 +12,20 @@ module.exports = postcss.plugin('postcss-place', (opts) => {
 	const propertyMatch = new RegExp(`^${ dashedPrefix }place-(content|items|self)`);
 
 	return (root) => {
-		// walk each matching declaration
-		root.walkDecls(propertyMatch, (decl) => {
+		root.walkDecls((decl) => {
+			const match = propertyMatch.exec(decl.prop);
+			if (match === null) {
+				return;
+			}
+
 			// alignment
-			const alignment = decl.prop.match(propertyMatch)[1];
+			const alignment = match[1];
 
 			// value
 			const value = parser(decl.value);
 
 			// divider position
-			const index = value.nodes.map(
-				(node) => node.type
-			).indexOf('space');
+			const index = value.nodes.findIndex((node) => node.type === 'space');
 
 			// new justify-[alignment] and align-[alignment] declarations
 			const alignValue   = index === -1 ? decl.value : parser.stringify(value.nodes.slice(0, index));
