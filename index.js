@@ -12,7 +12,6 @@ module.exports = postcss.plugin('postcss-place', (opts) => {
 	const propertyMatch = new RegExp(`^${ dashedPrefix }place-(content|items|self)`);
 
 	return (root) => {
-		// walk each matching declaration
 		root.walkDecls((decl) => {
 			const match = propertyMatch.exec(decl.prop);
 			if (match === null) {
